@@ -112,7 +112,7 @@ const Login = () => {
           <Pressable
             style={{ backgroundColor: '#26cc00' }}
             className="w-full py-4 rounded-2xl shadow-xl mt-10 active:opacity-90"
-            onPress={() => router.replace("/home")}
+            onPress={handleLogin}
           >
             <Text className="text-white text-xl font-bold text-center">
               Start Exploring
