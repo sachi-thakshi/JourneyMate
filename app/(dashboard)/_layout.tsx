@@ -3,16 +3,23 @@ import { Tabs } from 'expo-router'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 
 const tabs = [
-    {name:"home", title:"Home", icon:"home"},
-    {name:"tasks", title:"Tabs", icon:"list"},
-    {name:"news", title:"News", icon:"article"},
-    {name:"profile", title:"Profile", icon:"person"}
+    { name: "home", title: "Home", icon: "home" },   
+    { name: "explore", title: "Explore", icon: "map" },
+    { name: "journeys", title: "My Journeys", icon: "luggage" }, 
+    { name: "budget", title: "Budget", icon: "payments" }, 
+    { name: "profile", title: "Profile", icon: "person" },
 ] as const
 const DashBoardLayout = () => {
     return (
         <Tabs 
             screenOptions={{
-                headerShown:false
+                headerShown:false,
+                tabBarActiveTintColor: '#26cc00',
+                tabBarInactiveTintColor: '#9CA3AF',
+                tabBarStyle: {
+                    borderTopWidth: 1,
+                    borderTopColor: '#F3F4F6',
+                },
             }}
         >
             {
@@ -33,8 +40,7 @@ const DashBoardLayout = () => {
                 ))
             }
         </Tabs>
-    )
-        
+    )      
 }
 
 export default DashBoardLayout
