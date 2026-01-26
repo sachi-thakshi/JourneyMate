@@ -5,11 +5,13 @@ import React, { useState } from "react";
 import {
   Alert,
   Keyboard,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View
+  View,
+  Image,
 } from "react-native";
 
 // - /register
@@ -53,85 +55,113 @@ function Register() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-blue-900 justify-center items-center px-6">
-        {/* Title */}
-        <Text className="text-white text-4xl font-bold mb-2">
-          Create Account
-        </Text>
-
-        <Text className="text-white/80 text-lg mb-8">Join TaskHub today</Text>
-
-        {/* Username */}
-        <View className="w-full bg-white rounded-2xl px-4 py-3 mb-4">
-          <TextInput
-            placeholder="Username"
-            placeholderTextColor="#9CA3AF"
-            value={name}
-            onChangeText={setUsername}
-            className="text-lg text-gray-800"
+      <View className="flex-1 bg-white">
+        
+        <View className="absolute top-0 right-0">
+          <Image 
+            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/7894/7894141.png' }}
+            style={{ width: 180, height: 180, opacity: 0.1, tintColor: '#26cc00' }}
+            className="absolute -top-2 -right-1"
+            resizeMode="contain"
           />
         </View>
 
-        {/* Email */}
-        <View className="w-full bg-white rounded-2xl px-4 py-3 mb-4">
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#9CA3AF"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-            className="text-lg text-gray-800"
+        <View className="absolute bottom-0 left-0">
+          <Image 
+            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/2147/2147002.png' }}
+            style={{ width: 250, height: 250, opacity: 0.08, tintColor: '#26cc00' }}
+            className="absolute -bottom-1 -left-1"
+            resizeMode="contain"
           />
         </View>
 
-        {/* Password */}
-        <View className="w-full bg-white rounded-2xl px-4 py-3 mb-4">
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="#9CA3AF"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-            className="text-lg text-gray-800"
-          />
+        <View className="flex-1 justify-center items-center px-8 z-10">
+          
+          {/* Header Section */}
+          <View className="w-full mb-10">
+            <Text style={{ color: '#26cc00' }} className="text-5xl font-extrabold tracking-tight">
+              Join Us
+            </Text>
+            <View style={{ height: 4, width: 60, backgroundColor: '#26cc00', marginTop: 8, borderRadius: 2 }} />
+            <Text className="text-gray-400 text-lg mt-3 font-medium">
+              Start your JourneyMate adventure today.
+            </Text>
+          </View>
+
+          {/* Registration Form */}
+          <View className="w-full space-y-4">
+            {/* Username */}
+            <View className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 shadow-sm">
+              <TextInput
+                placeholder="Username"
+                placeholderTextColor="#9CA3AF"
+                value={name}
+                onChangeText={setUsername}
+                className="text-lg text-gray-800"
+              />
+            </View>
+
+            {/* Email */}
+            <View className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 shadow-sm mt-4">
+              <TextInput
+                placeholder="Email Address"
+                placeholderTextColor="#9CA3AF"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                className="text-lg text-gray-800"
+              />
+            </View>
+
+            {/* Password */}
+            <View className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 shadow-sm mt-4">
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="#9CA3AF"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+                className="text-lg text-gray-800"
+              />
+            </View>
+
+            {/* Confirm Password */}
+            <View className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 shadow-sm mt-4">
+              <TextInput
+                placeholder="Confirm Password"
+                placeholderTextColor="#9CA3AF"
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                className="text-lg text-gray-800"
+              />
+            </View>
+          </View>
+
+          {/* Register Button */}
+          <Pressable
+            style={{ backgroundColor: '#26cc00' }}
+            onPress={handleRegister}
+            className="w-full py-4 rounded-2xl shadow-xl mt-10 active:opacity-90"
+          >
+            <Text className="text-white text-xl font-bold text-center">
+              Create Account
+            </Text>
+          </Pressable>
+
+          {/* Back to Login Footer */}
+          <TouchableOpacity 
+            className="mt-8" 
+            onPress={() => router.back()}
+          >
+            <Text className="text-gray-500 text-center text-base">
+              Already have an account? 
+              <Text style={{ color: '#26cc00' }} className="font-bold"> Login</Text>
+            </Text>
+          </TouchableOpacity>
+
         </View>
-
-        {/* Confirm Password */}
-        <View className="w-full bg-white rounded-2xl px-4 py-3 mb-6">
-          <TextInput
-            placeholder="Confirm Password"
-            placeholderTextColor="#9CA3AF"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            className="text-lg text-gray-800"
-          />
-        </View>
-
-        {/* Register Button */}
-        <TouchableOpacity
-          onPress={handleRegister}
-          className="w-full bg-green-500 py-4 rounded-full shadow-lg mb-4"
-        >
-          <Text className="text-white text-xl font-semibold text-center">
-            Register
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          className="w-full bg-purple-800 py-4 rounded-full shadow-lg mb-4"
-          onPress={() => {
-            router.back();
-          }}
-        >
-          <Text className="text-white text-xl font-semibold text-center">
-            Login
-          </Text>
-        </TouchableOpacity>
-        {/* Footer */}
-        <Text className="text-white/80 mt-2">
-          Already have an account? Login
-        </Text>
       </View>
     </TouchableWithoutFeedback>
   );
