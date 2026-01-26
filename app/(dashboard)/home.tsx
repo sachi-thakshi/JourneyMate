@@ -6,12 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Home = () => {
   const router = useRouter()
-  const { logout, user } = useAuth()
-
-  const handleLogout = async () => {
-    await logout()
-    router.replace("/login")
-  }
+  const { user } = useAuth()
 
   return (
     <View className="flex-1 bg-white">
@@ -23,12 +18,6 @@ const Home = () => {
               {user?.displayName || 'Traveler'}!
             </Text>
           </View>
-          <TouchableOpacity 
-            onPress={handleLogout}
-            className="p-2 bg-gray-100 rounded-full"
-          >
-            <Ionicons name="log-out-outline" size={24} color="#EF4444" />
-          </TouchableOpacity>
         </View>
       </View>
 
