@@ -12,12 +12,26 @@ const Home = () => {
     <View className="flex-1 bg-white">
       <View className="px-6 pt-16 pb-6 bg-white shadow-sm border-b border-gray-100">
         <View className="flex-row justify-between items-center">
-          <View>
+          <View className='flex-1 pr-4'>
             <Text className="text-gray-400 text-lg font-medium">Welcome back,</Text>
             <Text style={{ color: '#26cc00' }} className="text-3xl font-extrabold">
               {user?.displayName || 'Traveler'}!
             </Text>
           </View>
+
+          <TouchableOpacity 
+            onPress={() => router.push('/profile')}
+            className="shadow-sm mr-1" 
+          >
+            <View className="rounded-full border-2" style={{ borderColor: '#26cc00' }}>
+              <Image 
+                source={{ 
+                  uri: user?.photoURL || 'https://cdn-icons-png.flaticon.com/512/1144/1144760.png' 
+                }}
+                className="w-14 h-14 rounded-full"
+              />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
 
