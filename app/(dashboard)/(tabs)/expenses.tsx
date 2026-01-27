@@ -59,7 +59,7 @@ const Expenses = () => {
       setTitle("")
       setAmount("")
     } catch (error) {
-      console.error("Full Firebase Error:", error) // This will show the real reason in your terminal
+      console.error("Full Firebase Error:", error) 
       Alert.alert("Error", "Could not save expense")
     }
   }
@@ -67,7 +67,13 @@ const Expenses = () => {
   return (
     <View className="flex-1 bg-[#f2fdf6]">
       <LinearGradient colors={['#26cc00', '#1b9400']} className="px-6 pt-16 pb-12 rounded-b-[40px]">
-        <TouchableOpacity onPress={() => router.back()} className="mb-4">
+        <TouchableOpacity 
+              onPress={() => router.push({
+                pathname: '/trip-details',
+                params: { id, name, budget } 
+              })}
+              className="mb-4 bg-white/20 p-2 rounded-xl self-start"
+          >
           <Ionicons name="arrow-back" size={28} color="white" />
         </TouchableOpacity>
         <Text className="text-3xl font-black text-white">{name}</Text>
