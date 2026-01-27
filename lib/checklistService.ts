@@ -9,6 +9,12 @@ export interface ChecklistItem {
   id: string
   task: string
   placeName: string
+  description: string
+  bestTime: string
+  budgetLevel: string
+  topActivities: string
+  howToGo: string
+  img: string
   completed: boolean
   userId: string
   createdAt: string

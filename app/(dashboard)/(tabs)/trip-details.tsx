@@ -113,23 +113,6 @@ const TripDetails = () => {
             
             <View className="flex-row justify-between mb-4">
               <TouchableOpacity 
-                onPress={() => router.push('/checklist')}
-                className="w-[48%] bg-white rounded-3xl overflow-hidden shadow-md"
-                style={{ shadowColor: '#3b82f6', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12 }}
-              >
-                <LinearGradient
-                  colors={['#eff6ff', '#dbeafe']}
-                  className="p-6 items-center"
-                >
-                  <View className="bg-white p-4 rounded-2xl mb-3 shadow-sm">
-                    <Ionicons name="list" size={32} color="#3b82f6" />
-                  </View>
-                  <Text className="font-black text-blue-900 text-base">Checklist</Text>
-                  <Text className="text-blue-600 text-xs mt-1">Track items</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
                 onPress={() => router.push('/expenses')}
                 className="w-[48%] bg-white rounded-3xl overflow-hidden shadow-md"
                 style={{ shadowColor: '#f97316', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12 }}
