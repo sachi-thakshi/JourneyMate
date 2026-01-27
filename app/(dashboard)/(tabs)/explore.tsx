@@ -116,7 +116,7 @@ const Explore = () => {
               </View>
               <View className="flex-1">
                 <Text className="text-gray-900 font-black text-xl mb-0.5">My Checklist</Text>
-                <Text className="text-gray-600 text-sm font-semibold">Manage packing & tasks</Text>
+                <Text className="text-gray-600 text-sm font-semibold">Organize and manage your favorite places. </Text>
               </View>
               <View className="bg-[#26cc00]/10 p-2 rounded-xl">
                 <Ionicons name="chevron-forward" size={22} color="#26cc00" />
