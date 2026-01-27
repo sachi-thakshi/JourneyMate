@@ -113,7 +113,14 @@ const TripDetails = () => {
             
             <View className="flex-row justify-between mb-4">
               <TouchableOpacity 
-                onPress={() => router.push('/expenses')}
+                onPress={() => router.push({
+                  pathname: '/expenses',
+                  params: { 
+                    id: id,     
+                    name: name,  
+                    budget: budget 
+                  }
+                })}
                 className="w-[48%] bg-white rounded-3xl overflow-hidden shadow-md"
                 style={{ shadowColor: '#f97316', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12 }}
               >

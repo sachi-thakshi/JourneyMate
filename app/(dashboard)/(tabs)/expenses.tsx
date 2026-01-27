@@ -1,120 +1,138 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput, FlatList } from 'react-native'
-import React, { useState } from 'react'
-import { useRouter } from 'expo-router'
+import { View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { db } from '@/lib/firebase'
+import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
+import { addExpense, deleteExpense, ExpenseItem } from '@/lib/expenseService'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Expenses = () => {
   const router = useRouter()
-  const [description, setDescription] = useState("")
+  const { id, name, budget } = useLocalSearchParams() // Received from TripDetails
+  
+  const [title, setTitle] = useState("")
   const [amount, setAmount] = useState("")
-  const [expenses, setExpenses] = useState([
-    { id: '1', desc: 'Hotel Booking', price: 200 },
-    { id: '2', desc: 'Train Ticket', price: 45 }
-  ])
+  const [expenses, setExpenses] = useState<ExpenseItem[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const addExpense = () => {
-    if (!description.trim() || !amount.trim()) return
-    const newExpense = {
-      id: Date.now().toString(),
-      desc: description,
-      price: parseFloat(amount)
+  const tripBudget = parseFloat(budget as string) || 0
+
+  useEffect(() => {
+    const user = getAuth().currentUser
+    if (!user || !id) return
+
+    const q = query(
+      collection(db, "expenses"),
+      where("tripId", "==", id),
+      orderBy("createdAt", "desc")
+    )
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as ExpenseItem[]
+      setExpenses(list)
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [id])
+
+  const totalSpent = expenses.reduce((sum, item) => sum + item.amount, 0)
+  const remaining = tripBudget - totalSpent
+
+  const handleAddExpense = async () => {
+    const numericAmount = parseFloat(amount)
+    
+    if (!title.trim()) {
+      Alert.alert("Error", "Please enter a title")
+      return
     }
-    setExpenses([newExpense, ...expenses])
-    setDescription("")
-    setAmount("")
-  }
+    
+    if (isNaN(numericAmount) || numericAmount <= 0) {
+      Alert.alert("Error", "Please enter a valid amount")
+      return
+    }
 
-  const deleteExpense = (id: string) => {
-    setExpenses(expenses.filter(item => item.id !== id))
+    try {
+      await addExpense(id as string, title, numericAmount, "General")
+      setTitle("")
+      setAmount("")
+    } catch (error) {
+      console.error("Full Firebase Error:", error) // This will show the real reason in your terminal
+      Alert.alert("Error", "Could not save expense")
+    }
   }
-
-  const totalSpent = expenses.reduce((sum, item) => sum + item.price, 0)
 
   return (
-    <View className="flex-1 bg-white">
-      {/* Header */}
-      <View className="pt-16 px-6 pb-6 bg-white border-b border-gray-100">
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center">
-            <TouchableOpacity 
-              onPress={() => router.back()} 
-              className="p-3 bg-gray-50 rounded-full"
-            >
-              <Ionicons name="chevron-back" size={24} color="black" />
-            </TouchableOpacity>
-            <Text className="text-2xl font-bold ml-4">Expense Tracker</Text>
-          </View>
+    <View className="flex-1 bg-[#f2fdf6]">
+      <LinearGradient colors={['#26cc00', '#1b9400']} className="px-6 pt-16 pb-12 rounded-b-[40px]">
+        <TouchableOpacity onPress={() => router.back()} className="mb-4">
+          <Ionicons name="arrow-back" size={28} color="white" />
+        </TouchableOpacity>
+        <Text className="text-3xl font-black text-white">{name}</Text>
+        <Text className="text-white/80 font-bold uppercase tracking-widest text-xs">Expense Tracker</Text>
+      </LinearGradient>
+
+      {/* Summary Cards */}
+      <View className="flex-row px-6 -mt-8 justify-between">
+        <View className="bg-white p-5 rounded-3xl w-[48%] shadow-lg shadow-green-900/20">
+          <Text className="text-gray-400 font-bold text-[10px] uppercase">Total Spent</Text>
+          <Text className="text-2xl font-black text-gray-900">${totalSpent.toFixed(2)}</Text>
+        </View>
+        <View className="bg-white p-5 rounded-3xl w-[48%] shadow-lg shadow-green-900/20">
+          <Text className="text-gray-400 font-bold text-[10px] uppercase">Remaining</Text>
+          <Text className={`text-2xl font-black ${remaining < 0 ? 'text-red-500' : 'text-[#26cc00]'}`}>
+            ${remaining.toFixed(2)}
+          </Text>
         </View>
       </View>
 
-      <ScrollView className="flex-1 px-6 pt-6" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 150 }}>
-        
-        {/* Total Summary Card */}
-        <View style={{ backgroundColor: '#26cc00' }} className="p-8 rounded-[35px] shadow-lg mb-8">
-          <Text className="text-white/80 font-medium uppercase tracking-widest text-xs mb-1">Total Spent</Text>
-          <Text className="text-white text-5xl font-extrabold">${totalSpent.toFixed(2)}</Text>
-        </View>
-
-        {/* Input Form */}
-        <View className="bg-gray-50 p-6 rounded-3xl border border-gray-100 mb-8">
-          <Text className="text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-4">Add New Expense</Text>
-          
-          <TextInput
-            placeholder="Description (e.g. Dinner)"
-            value={description}
-            onChangeText={setDescription}
-            className="bg-white p-4 rounded-2xl mb-3 border border-gray-100 text-gray-800"
+      <View className="px-6 mt-8">
+        <View className="bg-white p-4 rounded-3xl shadow-sm border border-green-50 flex-row items-center mb-6">
+          <TextInput 
+            placeholder="Item (e.g. Coffee)" 
+            value={title} 
+            onChangeText={setTitle} 
+            className="flex-1 font-bold text-gray-700 px-2"
           />
-          
-          <View className="flex-row">
-            <TextInput
-              placeholder="Amount ($)"
-              keyboardType="numeric"
-              value={amount}
-              onChangeText={setAmount}
-              className="flex-1 bg-white p-4 rounded-2xl border border-gray-100 text-gray-800"
-            />
-            <TouchableOpacity 
-              onPress={addExpense}
-              style={{ backgroundColor: '#26cc00' }}
-              className="ml-3 px-8 rounded-2xl justify-center items-center"
-            >
-              <Text className="text-white font-bold">Add</Text>
-            </TouchableOpacity>
-          </View>
+          <TextInput 
+            placeholder="$0.00" 
+            value={amount} 
+            onChangeText={setAmount} 
+            keyboardType="numeric"
+            className="w-20 font-black text-[#26cc00] px-2 text-right"
+          />
+          <TouchableOpacity onPress={handleAddExpense} className="bg-[#26cc00] p-3 rounded-2xl ml-2">
+            <Ionicons name="add" size={24} color="white" />
+          </TouchableOpacity>
         </View>
 
-        {/* Expense List */}
-        <Text className="text-gray-800 text-xl font-bold mb-4">History</Text>
-        {expenses.map((item) => (
-          <View 
-            key={item.id} 
-            className="flex-row items-center justify-between bg-white p-5 rounded-2xl mb-3 border border-gray-100 shadow-sm"
-          >
-            <View className="flex-row items-center">
-              <View className="bg-gray-100 p-3 rounded-xl mr-4">
-                <Ionicons name="receipt-outline" size={20} color="#26cc00" />
+        <FlatList
+          data={expenses}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View className="bg-white p-5 rounded-3xl mb-4 flex-row items-center justify-between shadow-sm border border-gray-50">
+              <View className="flex-row items-center">
+                <View className="bg-green-50 p-3 rounded-2xl mr-4">
+                  <Ionicons name="cart" size={20} color="#26cc00" />
+                </View>
+                <View>
+                  <Text className="text-gray-900 font-black text-base">{item.title}</Text>
+                  <Text className="text-gray-400 text-xs">{new Date(item.createdAt).toLocaleDateString()}</Text>
+                </View>
               </View>
-              <View>
-                <Text className="text-gray-900 font-bold text-lg">{item.desc}</Text>
-                <Text className="text-gray-400 text-sm">Today</Text>
+              <View className="items-end">
+                <Text className="text-gray-900 font-black text-base">${item.amount.toFixed(2)}</Text>
+                <TouchableOpacity onPress={() => deleteExpense(item.id)}>
+                  <Text className="text-red-400 text-[10px] font-bold mt-1 uppercase">Remove</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View className="flex-row items-center">
-              <Text className="text-gray-900 font-extrabold text-lg mr-4">-${item.price.toFixed(2)}</Text>
-              <TouchableOpacity onPress={() => deleteExpense(item.id)}>
-                <Ionicons name="close-circle" size={22} color="#ff4444" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-
-        {expenses.length === 0 && (
-          <View className="items-center py-10">
-            <Text className="text-gray-300 italic">No expenses logged yet</Text>
-          </View>
-        )}
-      </ScrollView>
+          )}
+        />
+      </View>
     </View>
   )
 }
