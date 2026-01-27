@@ -34,6 +34,7 @@ export default function TabLayout() {
       <Tabs.Screen name="checklist" options={{ href: null }} />
       <Tabs.Screen name="expenses" options={{ href: null }} />
       <Tabs.Screen name="trip-details" options={{ href: null }} />
+      <Tabs.Screen name="edit-trip" options={{ href: null }} />
     </Tabs>
   );
 }

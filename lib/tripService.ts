@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { getAuth } from "firebase/auth"
 
@@ -57,6 +57,16 @@ export const deleteTrip = async (tripId: string) => {
     await deleteDoc(tripRef)
   } catch (error) {
     console.error("Error deleting trip:", error)
+    throw error
+  }
+}
+
+export const updateTrip = async (tripId: string, updatedData: any) => {
+  try {
+    const tripRef = doc(db, "trips", tripId)
+    await updateDoc(tripRef, updatedData)
+  } catch (error) {
+    console.error("Error updating trip:", error)
     throw error
   }
 }
