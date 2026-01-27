@@ -4,7 +4,7 @@ import React from 'react'
 const budget = () => {
   return (
     <View className='flex-1 bg-blue-900 justify-center items-center px-6'>
-      <Text className = "text-white text-4xl font-bold mb-2">Trips</Text>
+      <Text className = "text-white text-4xl font-bold mb-2">Budget</Text>
     </View>
   )
 }
