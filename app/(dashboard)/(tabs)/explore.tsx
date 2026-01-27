@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { getPlaceDetails } from '@/lib/aiService'
 import { LinearGradient } from 'expo-linear-gradient'
+import { addToChecklist } from '@/lib/checklistService'
 
 interface Place {
   id?: string;
@@ -64,6 +65,23 @@ const Explore = () => {
     
     setSelectedPlace((prev: any) => (prev ? { ...prev, ...details } : null))
     setLoading(false)
+  }
+
+  const handleAddToChecklist = async () => {
+    if (!selectedPlace) return
+
+    try {
+      await addToChecklist(selectedPlace)
+
+      Alert.alert(
+        "Journey Saved", 
+        "Full travel guide and activities added to your checklist!"
+      )
+      setSelectedPlace(null)
+    } catch (error) {
+      console.error(error)
+      Alert.alert("Error", "Could not save details to checklist.")
+    }
   }
 
   return (
@@ -335,10 +353,7 @@ const Explore = () => {
 
                     {/* Action Button */}
                     <TouchableOpacity 
-                      onPress={() => { 
-                        Alert.alert("Added", "Place added to your checklist!"); 
-                        setSelectedPlace(null); 
-                      }} 
+                      onPress={handleAddToChecklist} 
                       className="bg-green-500 py-5 rounded-2xl flex-row justify-center items-center shadow-lg mb-4"
                       style={{ shadowColor: '#26cc00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 }}
                     >
