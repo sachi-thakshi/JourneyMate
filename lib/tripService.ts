@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, DocumentData, DocumentReference, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore"
 import { db } from "./firebase"
 import { getAuth } from "firebase/auth"
 
@@ -10,21 +10,25 @@ export const addTrip = async (
     budget: string,
     category: string,
     days: string,
-    notes: string
-) => {
+    notes: string,
+    startDate: string,
+    endDate: string
+): Promise<DocumentReference<DocumentData> | null> => { 
     const user = auth.currentUser
-    if (!user) return
+    if (!user) return null
 
-    await addDoc(tripsCollection, {
+    return await addDoc(tripsCollection, {
         name,
         budget,
         category,
         days,
         notes,
+        startDate,
+        endDate,
         userId: user.uid,
         createdAt: new Date().toISOString()
-    }) 
-} 
+    })
+}
 
 export const getAllTrips = async () => {
     const user = auth.currentUser
@@ -46,6 +50,8 @@ export const getAllTrips = async () => {
             category: data.category as string,
             days: data.days as string,
             notes: data.notes as string,
+            startDate: data.startDate as string, 
+            endDate: data.endDate as string,     
             createdAt: data.createdAt as string
         }
     })
