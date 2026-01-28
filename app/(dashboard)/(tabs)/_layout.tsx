@@ -1,34 +1,92 @@
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router'
+import { Ionicons } from '@expo/vector-icons'
+import { Platform } from 'react-native'
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ 
-      tabBarActiveTintColor: '#26cc00', 
-      headerShown: false,
-      tabBarStyle: { 
-        height: 65, 
-        paddingBottom: 100, 
-        paddingTop: 10 
-      }
-    }}>
-      {/* Main Visible Tabs */}
-      <Tabs.Screen name="home" options={{ title: 'Home', 
-        tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} /> }} />
-      
-      <Tabs.Screen name="explore" options={{ title: 'Explore', 
-        tabBarIcon: ({ color }) => <Ionicons name="search" size={24} color={color} /> }} />
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: '#26cc00',
+        tabBarInactiveTintColor: '#9CA3AF',
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 40,          
+          left: 16,
+          right: 16,
+          height: 70,
+          paddingTop: 10,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+          borderRadius: 24,    
+          backgroundColor: '#F1FFEB',
 
-      <Tabs.Screen name="journeys" options={{ title: 'Trips', 
-        tabBarIcon: ({ color }) => <Ionicons name="airplane" size={24} color={color} /> }} />
+          // Android shadow
+          elevation: 12,
 
-      <Tabs.Screen name="budget" options={{ title: 'Budget', 
-        tabBarIcon: ({ color }) => <Ionicons name="wallet" size={24} color={color} /> }} />
+          // iOS shadow
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 10 },
+          shadowOpacity: 0.15,
+          shadowRadius: 20,
+        },
+      }}
+    >
+      {/* Home */}
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="home" size={focused ? 28 : 24} color={color} />
+          ),
+        }}
+      />
 
-      <Tabs.Screen name="profile" options={{ title: 'Profile', 
-        tabBarIcon: ({ color }) => <Ionicons name="person" size={24} color={color} /> }} />
+      {/* Explore */}
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: 'Explore',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="search" size={focused ? 28 : 24} color={color} />
+          ),
+        }}
+      />
 
-      {/* Hidden from Bar but keeping Nav Bar visible on the page */}
+      {/* Trips */}
+      <Tabs.Screen
+        name="journeys"
+        options={{
+          title: 'Trips',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="airplane" size={focused ? 28 : 24} color={color} />
+          ),
+        }}
+      />
+
+      {/* Budget */}
+      <Tabs.Screen
+        name="budget"
+        options={{
+          title: 'Budget',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="wallet" size={focused ? 28 : 24} color={color} />
+          ),
+        }}
+      />
+
+      {/* Profile */}
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="person" size={focused ? 28 : 24} color={color} />
+          ),
+        }}
+      />
+
+      {/* Hidden Screens */}
       <Tabs.Screen name="create-trip" options={{ href: null }} />
       <Tabs.Screen name="community" options={{ href: null }} />
       <Tabs.Screen name="checklist" options={{ href: null }} />
@@ -36,5 +94,5 @@ export default function TabLayout() {
       <Tabs.Screen name="trip-details" options={{ href: null }} />
       <Tabs.Screen name="edit-trip" options={{ href: null }} />
     </Tabs>
-  );
+  )
 }
