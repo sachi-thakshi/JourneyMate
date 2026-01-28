@@ -88,7 +88,7 @@ const Journeys = () => {
           </View>
           <TouchableOpacity 
             onPress={() => router.push('/create-trip')}
-            className="bg-green-500 w-14 h-14 rounded-2xl items-center justify-center shadow-lg"
+            className="bg-[#26cc00] w-14 h-14 rounded-2xl items-center justify-center shadow-lg"
             style={{ shadowColor: '#26cc00', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8 }}
           >
             <Ionicons name="add" size={28} color="white" />
