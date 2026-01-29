@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/my-icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.sachiniimbulagoda.journeymate"
     },
     "web": {
       "output": "static",
@@ -43,6 +44,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "12ad5801-f112-43fb-8c70-44228364b544"
+      }
     }
   }
 }
