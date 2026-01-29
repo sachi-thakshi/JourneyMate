@@ -20,7 +20,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.sachiniimbulagoda.journeymate"
+      "package": "com.sachiniimbulagoda.journeymate",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "output": "static",
