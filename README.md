@@ -1,50 +1,144 @@
-# Welcome to your Expo app 👋
+# 🗺️ JourneyMate - Mobile Travel Planner
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+JourneyMate is a professional mobile travel planner and trip organizer built with **React Native (Expo)**. It empowers users to plan trips, manage destinations, and track travel budgets with smart suggestions—all in one place.
 
-## Get started
+---
 
-1. Install dependencies
+## 🛠 Tech Stack
 
-   ```bash
-   npm install
-   ```
+* **Frontend:** React Native (Expo) with TypeScript
+* **Styling:** NativeWind (Tailwind CSS)
+* **Backend:** Firebase Authentication & Cloud Firestore
+* **Navigation:** Expo Router (File-based)
+* **Build Tool:** Expo Application Services (EAS)
+* **Distribution:** Android (APK)
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 📋 Prerequisites
 
-In the output, you'll find options to open the app in a
+Make sure you have the following installed:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* **Node.js:** v18 or higher (LTS recommended)
+* **npm:** (Comes with Node.js) or **yarn**
+* **Git:** For cloning the repository
+* **EAS CLI:** For building APKs (`npm install -g eas-cli`)
+* **Expo Go:** Download on your Android device from the Play Store to test in development mode.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🔐 Key Features
 
-When you're ready, run:
+* **Secure Authentication:** User sign-up, login, and profile management powered by **Firebase Auth**.
+* **AI-Powered Trip Overviews:** Integration with **Groq AI** to generate automated, intelligent summaries and suggestions for your travel plans.
+* **Smart Budgeting & Savings:** A sophisticated budget module where users input their income and personalized savings insights.
+* **Cloud-Based Media Storage:** Seamless photo uploads for profile pictures using **Cloudinary**.
+* **Full CRUD Operations:** Create, Read, Update, and Delete trips and destinations with real-time synchronization via **Cloud Firestore**.
+* **Modern UI/UX:** A high-performance, responsive interface built with **NativeWind (Tailwind CSS)**, featuring a floating navigation bar and custom themes.
+* **Full Trip Lifecycle (CRUD):** Users can seamlessly **Create**, **View**, **Update (Edit)**, and **Delete** their trip plans, with all changes instantly synced to **Cloud Firestore**.
 
-```bash
-npm run reset-project
+---
+
+## 🔥 Firebase Configuration
+
+1. Create a project at [Firebase Console](https://console.firebase.google.com).
+2. Enable **Authentication** (Email/Password) and **Cloud Firestore**.
+3. Register an Android app with the package name: `com.sachiniimbulagoda.journeymate`.
+4. Download the `google-services.json` and place it in your project root.
+5. Set up your environment variables in a `.env` file:
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_buckey
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+EXPO_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
+
+```
+---
+
+## ☁️ Cloudinary Configuration (Image Storage)
+JourneyMate uses Cloudinary for storing user profile pictures and trip images. Follow these steps to set up your environment:
+
+1. **Get Cloud Name**: Log in to your [Cloudinary Dashboard](https://cloudinary.com/console) and copy your **Cloud Name**.
+2. **Enable Unsigned Uploads**: 
+   - Go to **Settings** (Gear Icon) > **Upload**.
+   - Scroll to **Upload presets** and click "Enable unsigned uploading".
+3. **Create Upload Preset**:
+   - Click **Add upload preset**.
+   - Set **Signing Mode** to `Unsigned`.
+   - Copy the generated **Upload preset name** (e.g., `ml_default`).
+4. **Update `.env`**:
+   Add these values to your environment variables:
+
+```env
+EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset_name
+```
+---
+
+## 🤖 AI Groq Configuration (AI Trip Companion)
+
+JourneyMate uses Groq's high-speed LPU to generate smart trip overviews and itinerary suggestions.
+
+1. **Get API Key**: Sign up at [Groq Cloud Console](https://console.groq.com/).
+2. **Create Key**: Navigate to **API Keys** and generate a new key.
+3. **Update `.env`**:
+   Add the key to your environment variables:
+
+```env
+EXPO_PUBLIC_GROQ_API_KEY=your_groq_api_key
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 📦 Installation
+1. Clone the repository:
 
-## Learn more
+```bash
+git clone https://github.com/sachi-thakshi/JourneyMate.git
+cd JourneyMate
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+2. Install dependencies:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm install
+```
 
-## Join the community
+## ▶️ Running the App (Development)
+Start the Expo development server:
 
-Join our community of developers creating universal apps.
+```bash
+npx expo start
+```
+Scan the QR code using the Expo Go app on your Android device.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📱 Building Android APK with EAS
+1. Login to Expo:
+   
+```
+eas login
+```
+
+2. Configure build:
+```
+eas build:configure
+```
+
+3. Run the build:
+```
+eas build -p android --profile preview --clear-cache
+```
+
+## 📥 App Download (APK)
+The Android APK is available via GitHub Releases.
+👉 **[Download JourneyMate APK](https://github.com/sachi-thakshi/JourneyMate/releases)**
+
+
+
+
+
+
+
+
+
